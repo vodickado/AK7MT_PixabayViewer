@@ -15,11 +15,22 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<androidx.fragment.app.FragmentContainerView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/overviewFragment"
-    android:name="com.example.pixabayviewer.ui.slideshow.OverviewFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:layout="@layout/fragment_slideshow" />
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="photo"
+            type="com.example.pixabayviewer.ui.slideshow.photo.MarsPhoto" />
+    </data>
+    <ImageView
+        android:id="@+id/mars_image"
+        android:layout_width="wrap_content"
+        android:layout_height="170dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:padding="2dp"
+        app:imageUrl="@{photo.imgSrcUrl}"
+        tools:src="@tools:sample/backgrounds/scenic"/>
+</layout>

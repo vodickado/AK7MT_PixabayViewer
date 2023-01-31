@@ -4,40 +4,36 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.example.pixabayviewer.databinding.FragmentSlideshowBinding
 
-class SlideshowFragment : Fragment() {
+/**
+ * This fragment shows the the status of the Mars photos web services transaction.
+ */
+class OverviewFragment : Fragment() {
 
-    private var _binding: FragmentSlideshowBinding? = null
+    private val viewModel: OverviewViewModel by viewModels()
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
+    /**
+     * Inflates the layout with Data Binding, sets its lifecycle owner to the OverviewFragment
+     * to enable Data Binding to observe LiveData, and sets up the RecyclerView with an adapter.
+     */
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        val slideshowViewModel =
-            ViewModelProvider(this).get(SlideshowViewModel::class.java)
+    ): View? {
+        val binding = FragmentSlideshowBinding.inflate(inflater)
 
-        _binding = FragmentSlideshowBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
+        binding.lifecycleOwner = this
 
-        /*
-        val textView: TextView = binding.textSlideshow
-        slideshowViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }*/
-        return root
-    }
+        // Giving the binding access to the OverviewViewModel
+        binding.viewModel = viewModel
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        // Sets the adapter of the photosGrid RecyclerView
+        binding.photosGrid.adapter = PhotoGridAdapter()
+
+        return binding.root
     }
 }
