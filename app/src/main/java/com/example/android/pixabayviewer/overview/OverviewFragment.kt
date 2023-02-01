@@ -17,11 +17,15 @@
 package com.example.android.pixabayviewer.overview
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
+import com.example.android.pixabayviewer.R
 import com.example.android.pixabayviewer.databinding.FragmentOverviewBinding
 
 
@@ -50,4 +54,19 @@ class OverviewFragment : Fragment() {
 
         return binding.root
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        var recyclerView:RecyclerView = view.findViewById(R.id.photos_grid)
+
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1)) {
+                    viewModel.loadNextPage();
+                }
+            }
+        })
+    }
+
+
 }

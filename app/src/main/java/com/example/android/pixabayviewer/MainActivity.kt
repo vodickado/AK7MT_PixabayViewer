@@ -18,6 +18,7 @@ package com.example.android.pixabayviewer
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -25,6 +26,10 @@ import android.view.MenuItem
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.android.pixabayviewer.overview.OverviewViewModel
+
+//import kotlin.coroutines.jvm.internal.CompletedContinuation.context
+
 
 /**
  * MainActivity sets the content view activity_main, a fragment container that contains
@@ -45,12 +50,33 @@ class MainActivity : AppCompatActivity() {
         searchView!!.maxWidth = Int.MAX_VALUE
 
 
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String): Boolean {
+                //adapter.filter.filter(newText)
+                //updateView();
+                Log.i("LUL",newText);
+
+                //OverviewViewModel.toSearch="";
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+                Log.i("LUL2",query);
+                /*toSearch=query;
+                updateView();*/
+                //OverviewViewModel.setSearch(query);
+                OverviewViewModel.toSearch.value=query;
+                return false
+            }
+        })
+
+/*
         // Associate searchable configuration with the SearchView
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         (menu.findItem(R.id.action_search).actionView as SearchView).apply {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
         }
-
+*/
         return true
     }
 
@@ -62,7 +88,6 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
 
     private fun showToast(msg: String) {
         Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()

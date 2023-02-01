@@ -17,14 +17,14 @@
 package com.example.android.pixabayviewer.overview
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.widget.Toast
+import androidx.lifecycle.*
+import androidx.recyclerview.widget.RecyclerView
 import com.example.android.pixabayviewer.models.Hit
 import com.example.android.pixabayviewer.models.PixRes
 import com.example.android.pixabayviewer.network.PixApi
 import com.example.android.pixabayviewer.network.PixPhoto
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -47,10 +47,10 @@ class OverviewViewModel : ViewModel() {
 
     // Internally, we use a MutableLiveData, because we will be updating the List of MarsPhoto
     // with new values
-    private val _photos = MutableLiveData<List<Hit>>()
+    private val _photos = MutableLiveData<List<Hit>?>()
 
     // The external LiveData interface to the property is immutable, so only this class can modify
-    val photos: LiveData<List<Hit>> = _photos
+    val photos: LiveData<List<Hit>?> = _photos
 
 
     /*
@@ -64,12 +64,71 @@ class OverviewViewModel : ViewModel() {
     /**
      * Call getPixabayViewer() on init so we can display status immediately.
      */
+    //public var toSearch: String? =null;
+    private var currentPage:Int=1;
+    //private var toSearch = MutableLiveData("")
+
+    //public var _toSearch = MutableLiveData<String>()
+    //val toSearch: LiveData<String> = _toSearch
+
+
+
     init {
-        getPixabayViewer()
+        currentPage=1;
+        updateView();
+
+        toSearch.observeForever(Observer{ data->
+            updateView();
+        })
     }
+    /*
+    fun setSearch(query: String){
+        toSearch=query;
+        updateView();
+    }*/
+        /*
+        findViewById(R.id.action_search)
+        (menu.menu.findItem(R.id.action_search).actionView as SearchView)
+        var searchView = R.id.action_search as SearchView
+        //searchEditText = findViewById(id.search_src_text) as EditText //SearchView editText
+
+       // closeButton = findViewById(id.search_close_btn) as ImageView? //X button of SearchView
 
 
-    private var map: HashMap<String, String> = HashMap<String, String> ()
+        searchView.onActionViewExpanded() //new Added line
+
+        searchView.setIconifiedByDefault(false)
+        searchView.setQueryHint("Search Here")
+
+        if (!searchView.isFocused()) {
+            searchView.clearFocus()
+        }
+
+//Query
+
+//Query
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                toSearch=query;
+                updateView();
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })*/
+
+
+    /*
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        handleIntent(intent)
+    }*/
+
+
+
+    
 
     /**
      * Gets Mars photos information from the Mars API Retrofit service and updates the
@@ -80,15 +139,25 @@ class OverviewViewModel : ViewModel() {
     //var retrofit: Retrofit? = null
     //var adapter: PhotoGridAdapter? = null
 
-    private fun getPixabayViewer() {
-        map = HashMap<String,String>()
+    public fun loadNextPage(){
+        currentPage+=1
+        updateView()
+    }
+
+    
+    private fun updateView() {
+        //var map: HashMap<String, String> = HashMap<String, String> ()
+        var map: HashMap<String, String> = HashMap<String, String> ()
         viewModelScope.launch {
             _status.value = PixApiStatus.LOADING
             try {
                 map.put("key", "9827246-942760fad484a84884af4a848");
-                map.put("q", "animal");
+
+                if(toSearch.value!=null){
+                    map.put("q", toSearch.value.toString());
+                }
                 map.put("image_type","all");
-                map.put("page","1");
+                map.put("page", currentPage.toString());
 
 
 
@@ -117,7 +186,18 @@ class OverviewViewModel : ViewModel() {
                 var lul=PixApi.retrofitService.getImages(map)?.enqueue(object : Callback<PixRes?> {
                     override fun onResponse(call: Call<PixRes?>, response: Response<PixRes?>) {
                         if (response.isSuccessful) {
-                            _photos.value = response.body()?.hits
+                            var newData:List<Hit>?= response.body()?.hits
+                            if(newData!=null) {
+                                if (currentPage == 1) {
+                                    _photos.value = newData
+                                } else {
+                                    val joined = ArrayList<Hit>()
+                                    _photos.value?.let { joined.addAll(it) }
+                                    joined.addAll(newData)
+                                    _photos.value = joined
+                                }
+                            }
+
 
                             _status.value = PixApiStatus.DONE
                             //callBack.onSuccess(response.body())
@@ -137,5 +217,9 @@ class OverviewViewModel : ViewModel() {
                 //_photos.value = listOf()
             }
         }
+    }
+
+    companion object {
+        var toSearch = MutableLiveData<String>()
     }
 }
