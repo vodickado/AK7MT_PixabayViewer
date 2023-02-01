@@ -22,7 +22,7 @@
     <data>
         <variable
             name="photo"
-            type="com.example.pixabayviewer.ui.slideshow.photo.MarsPhoto" />
+            type="com.example.android.pixabayviewer.models.Hit" />
     </data>
     <ImageView
         android:id="@+id/mars_image"
@@ -31,6 +31,6 @@
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
         android:padding="2dp"
-        app:imageUrl="@{photo.imgSrcUrl}"
+        app:imageUrl="@{photo.previewURL}"
         tools:src="@tools:sample/backgrounds/scenic"/>
 </layout>
