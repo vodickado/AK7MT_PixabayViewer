@@ -17,6 +17,8 @@
 package com.example.android.pixabayviewer
 
 import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -25,6 +27,7 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.android.pixabayviewer.overview.OverviewViewModel
+
 
 //import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
@@ -94,6 +97,12 @@ class MainActivity : AppCompatActivity() {
         if (id == R.id.action_settings) {
             // do something here
             Log.i("lul",id.toString())
+            //OverviewViewModel.activeItem.value=photo
+
+            val myIntent = Intent(this, SettingsActivity::class.java)
+            //myIntent.putExtra("key", value) //Optional parameters
+
+            this?.startActivity(myIntent)
         }
         return super.onOptionsItemSelected(item)
     }

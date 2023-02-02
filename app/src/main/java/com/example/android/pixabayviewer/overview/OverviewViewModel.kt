@@ -221,6 +221,7 @@ class OverviewViewModel : ViewModel() {
     }
 
     companion object {
+        var activeItem= MutableLiveData<Hit>()
         var toSearch = MutableLiveData<String>()
         var currentPage=MutableLiveData<Int>(1)
     }

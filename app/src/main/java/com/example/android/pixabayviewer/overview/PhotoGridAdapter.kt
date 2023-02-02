@@ -29,7 +29,7 @@ import com.example.android.pixabayviewer.network.PixPhoto
  * This class implements a [RecyclerView] [ListAdapter] which uses Data Binding to present [List]
  * data, including computing diffs between lists.
  */
-class PhotoGridAdapter :
+class PhotoGridAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<Hit, PhotoGridAdapter.PixabayViewerViewHolder>(DiffCallback) {
 
     /**
@@ -78,6 +78,14 @@ class PhotoGridAdapter :
      */
     override fun onBindViewHolder(holder: PixabayViewerViewHolder, position: Int) {
         val marsPhoto = getItem(position)
+        holder.itemView.setOnClickListener {
+            onClickListener.onClick(marsPhoto)
+        }
         holder.bind(marsPhoto)
+    }
+
+
+    class OnClickListener(val clickListener: (meme: Hit) -> Unit) {
+        fun onClick(meme: Hit) = clickListener(meme)
     }
 }

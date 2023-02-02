@@ -16,14 +16,19 @@
 
 package com.example.android.pixabayviewer.overview
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.android.pixabayviewer.MainActivity
+import com.example.android.pixabayviewer.PhotoFragmentActivity
 import com.example.android.pixabayviewer.R
 import com.example.android.pixabayviewer.databinding.FragmentOverviewBinding
 
@@ -49,7 +54,34 @@ class OverviewFragment : Fragment() {
         binding.viewModel = viewModel
 
         // Sets the adapter of the photosGrid RecyclerView
-        binding.photosGrid.adapter = PhotoGridAdapter()
+        binding.photosGrid.adapter = PhotoGridAdapter(PhotoGridAdapter.OnClickListener { photo ->
+            //Toast.makeText(context, "${photo.pageURL}", Toast.LENGTH_SHORT).show();
+            Log.d("lul",photo.pageURL.toString());
+
+            //startActivity();
+            //var activit=PhotoFragmentActivity(photo)
+
+            //startActivity(Intent(this, PhotoFragmentActivity::class.java))
+            /*val intent = Intent(this, PhotoFragmentActivity::class.java)
+            startActivity(intent)*/
+
+
+/*
+            val i = Intent(this, PhotoFragmentActivity)
+            i.putExtra("id", id)
+            startActivity(i)
+*/
+
+            //Log.d(context.toString(),activit.toString())
+            //activit.startActivity()
+            OverviewViewModel.activeItem.value=photo
+
+            val myIntent = Intent(context, PhotoFragmentActivity::class.java)
+            //myIntent.putExtra("key", value) //Optional parameters
+
+            activity?.startActivity(myIntent)
+            //view?.findNavController()?.navigate(R.layout.fragment_photo)
+        })
 
         return binding.root
     }
@@ -67,6 +99,7 @@ class OverviewFragment : Fragment() {
         })
 
 
+        /*
         recyclerView.addOnItemTouchListener(
             RecyclerItemClickListener(context, recyclerView, object : AdapterView.OnItemClickListener {
                 fun onItemClick(view: View?, position: Int) {
@@ -77,7 +110,7 @@ class OverviewFragment : Fragment() {
                     // do whatever
                 }
             })
-        )
+        )*/
 
     }
 
