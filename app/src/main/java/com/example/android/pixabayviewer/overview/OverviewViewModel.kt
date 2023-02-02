@@ -65,7 +65,7 @@ class OverviewViewModel : ViewModel() {
      * Call getPixabayViewer() on init so we can display status immediately.
      */
     //public var toSearch: String? =null;
-    private var currentPage:Int=1;
+    //private var currentPage:Int=1;
     //private var toSearch = MutableLiveData("")
 
     //public var _toSearch = MutableLiveData<String>()
@@ -74,7 +74,7 @@ class OverviewViewModel : ViewModel() {
 
 
     init {
-        currentPage=1;
+        currentPage.value=1;
         updateView();
 
         toSearch.observeForever(Observer{ data->
@@ -140,7 +140,8 @@ class OverviewViewModel : ViewModel() {
     //var adapter: PhotoGridAdapter? = null
 
     public fun loadNextPage(){
-        currentPage+=1
+        currentPage.value= currentPage.value?.plus(1);
+
         updateView()
     }
 
@@ -157,7 +158,7 @@ class OverviewViewModel : ViewModel() {
                     map.put("q", toSearch.value.toString());
                 }
                 map.put("image_type","all");
-                map.put("page", currentPage.toString());
+                map.put("page", currentPage.value.toString());
 
 
 
@@ -188,7 +189,7 @@ class OverviewViewModel : ViewModel() {
                         if (response.isSuccessful) {
                             var newData:List<Hit>?= response.body()?.hits
                             if(newData!=null) {
-                                if (currentPage == 1) {
+                                if (currentPage.value == 1) {
                                     _photos.value = newData
                                 } else {
                                     val joined = ArrayList<Hit>()
@@ -221,5 +222,6 @@ class OverviewViewModel : ViewModel() {
 
     companion object {
         var toSearch = MutableLiveData<String>()
+        var currentPage=MutableLiveData<Int>(1)
     }
 }

@@ -16,9 +16,7 @@
 
 package com.example.android.pixabayviewer
 
-import android.app.SearchManager
-import android.content.Context
-import android.content.Intent
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -51,24 +49,30 @@ class MainActivity : AppCompatActivity() {
 
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextChange(newText: String): Boolean {
-                //adapter.filter.filter(newText)
-                //updateView();
-                Log.i("LUL",newText);
-
-                //OverviewViewModel.toSearch="";
+            override fun onQueryTextChange(query: String): Boolean {
+                Log.i("LUL",query);
+                setQuery(query);
                 return true
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
                 Log.i("LUL2",query);
-                /*toSearch=query;
-                updateView();*/
-                //OverviewViewModel.setSearch(query);
-                OverviewViewModel.toSearch.value=query;
+                setQuery(query);
                 return false
             }
+
         })
+
+
+        searchView.setOnCloseListener(SearchView.OnCloseListener {
+            Log.i(TAG, "mSearchView on close ")
+            setQuery("");
+            false
+        })
+
+
+
+
 
 /*
         // Associate searchable configuration with the SearchView
@@ -78,6 +82,11 @@ class MainActivity : AppCompatActivity() {
         }
 */
         return true
+    }
+
+    private fun setQuery(query:String){
+        OverviewViewModel.currentPage.value=1;
+        OverviewViewModel.toSearch.value=query;
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

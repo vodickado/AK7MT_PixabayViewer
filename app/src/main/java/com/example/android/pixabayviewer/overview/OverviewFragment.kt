@@ -17,11 +17,10 @@
 package com.example.android.pixabayviewer.overview
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
@@ -66,6 +65,20 @@ class OverviewFragment : Fragment() {
                 }
             }
         })
+
+
+        recyclerView.addOnItemTouchListener(
+            RecyclerItemClickListener(context, recyclerView, object : AdapterView.OnItemClickListener {
+                fun onItemClick(view: View?, position: Int) {
+                    // do whatever
+                }
+
+                fun onLongItemClick(view: View?, position: Int) {
+                    // do whatever
+                }
+            })
+        )
+
     }
 
 

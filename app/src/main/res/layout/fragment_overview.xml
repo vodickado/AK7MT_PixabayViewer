@@ -28,18 +28,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="731dp"
         tools:context="com.example.android.pixabayviewer.overview.OverViewFragment">
-
-
-        <SearchView
-            android:id="@+id/idSV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:iconifiedByDefault="false"
-            android:padding="4dp"
-            android:queryHint="Search Programming language" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -52,7 +42,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/idSV"
+            app:layout_constraintTop_toTopOf="parent"
             app:listData="@{viewModel.photos}"
             app:spanCount="2"
             tools:itemCount="16"
