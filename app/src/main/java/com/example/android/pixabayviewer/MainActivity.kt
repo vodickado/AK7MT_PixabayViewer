@@ -29,13 +29,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.android.pixabayviewer.overview.OverviewViewModel
 
 
-//import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
-
-/**
- * MainActivity sets the content view activity_main, a fragment container that contains
- * overviewFragment.
- */
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,19 +47,18 @@ class MainActivity : AppCompatActivity() {
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(query: String): Boolean {
-                Log.i("LUL",query);
+                Log.i("TextChange",query);
                 setQuery(query);
                 return true
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
-                Log.i("LUL2",query);
+                Log.i("TextSubmit",query);
                 setQuery(query);
                 return false
             }
 
         })
-
 
         searchView.setOnCloseListener(SearchView.OnCloseListener {
             Log.i(TAG, "mSearchView on close ")
@@ -73,17 +66,6 @@ class MainActivity : AppCompatActivity() {
             false
         })
 
-
-
-
-
-/*
-        // Associate searchable configuration with the SearchView
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        (menu.findItem(R.id.action_search).actionView as SearchView).apply {
-            setSearchableInfo(searchManager.getSearchableInfo(componentName))
-        }
-*/
         return true
     }
 
@@ -95,13 +77,9 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.action_settings) {
-            // do something here
-            Log.i("lul",id.toString())
-            //OverviewViewModel.activeItem.value=photo
+            Log.i("Settings intent",id.toString())
 
             val myIntent = Intent(this, SettingsActivity::class.java)
-            //myIntent.putExtra("key", value) //Optional parameters
-
             this?.startActivity(myIntent)
         }
         return super.onOptionsItemSelected(item)

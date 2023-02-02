@@ -27,26 +27,16 @@ import retrofit2.http.QueryMap
 
 
 
-//private const val BASE_URL = "https://android-kotlin-fun-mars-server.appspot.com/"
 private const val BASE_URL = "https://pixabay.com/"
 
-/**
- * Build the Moshi object that Retrofit will be using, making sure to add the Kotlin adapter for
- * full Kotlin compatibility.
- */
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
 
-/**
- * Use the Retrofit builder to build a retrofit object using a Moshi converter with our Moshi
- * object.
- */
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(MoshiConverterFactory.create(moshi))
     .baseUrl(BASE_URL)
     .build()
-
 
 
 interface PixServ {
@@ -54,9 +44,6 @@ interface PixServ {
     fun getImages(@QueryMap parameter: Map<String, String>): Call<PixRes?>?
 }
 
-/**
- * A public Api object that exposes the lazy-initialized Retrofit service
- */
 object PixApi {
     val retrofitService: PixServ by lazy { retrofit.create(PixServ::class.java) }
 }

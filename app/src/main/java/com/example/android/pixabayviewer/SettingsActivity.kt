@@ -12,10 +12,8 @@ class SettingsActivity:AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //getSupportActionBar()?.setDisplayShowTitleEnabled(false);
 
         setContentView(R.layout.fragment_settings)
-        //binding = DataBindingUtil.setContentView(this, R.layout.fragment_settings)
 
         val actionbar = supportActionBar
         actionbar?.setDisplayHomeAsUpEnabled(true)

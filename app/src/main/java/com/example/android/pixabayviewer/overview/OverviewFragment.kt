@@ -37,50 +37,20 @@ class OverviewFragment : Fragment() {
 
     private val viewModel: OverviewViewModel by viewModels()
 
-    /**
-     * Inflates the layout with Data Binding, sets its lifecycle owner to the OverviewFragment
-     * to enable Data Binding to observe LiveData, and sets up the RecyclerView with an adapter.
-     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentOverviewBinding.inflate(inflater)
 
-        // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
-
-        // Giving the binding access to the OverviewViewModel
         binding.viewModel = viewModel
-
-        // Sets the adapter of the photosGrid RecyclerView
         binding.photosGrid.adapter = PhotoGridAdapter(PhotoGridAdapter.OnClickListener { photo ->
-            //Toast.makeText(context, "${photo.pageURL}", Toast.LENGTH_SHORT).show();
-            Log.d("lul",photo.pageURL.toString());
+            Log.d("Starting PhotoFragment",photo.toString());
 
-            //startActivity();
-            //var activit=PhotoFragmentActivity(photo)
-
-            //startActivity(Intent(this, PhotoFragmentActivity::class.java))
-            /*val intent = Intent(this, PhotoFragmentActivity::class.java)
-            startActivity(intent)*/
-
-
-/*
-            val i = Intent(this, PhotoFragmentActivity)
-            i.putExtra("id", id)
-            startActivity(i)
-*/
-
-            //Log.d(context.toString(),activit.toString())
-            //activit.startActivity()
             OverviewViewModel.activeItem.value=photo
-
             val myIntent = Intent(context, PhotoFragmentActivity::class.java)
-            //myIntent.putExtra("key", value) //Optional parameters
-
             activity?.startActivity(myIntent)
-            //view?.findNavController()?.navigate(R.layout.fragment_photo)
         })
 
         return binding.root
@@ -97,22 +67,5 @@ class OverviewFragment : Fragment() {
                 }
             }
         })
-
-
-        /*
-        recyclerView.addOnItemTouchListener(
-            RecyclerItemClickListener(context, recyclerView, object : AdapterView.OnItemClickListener {
-                fun onItemClick(view: View?, position: Int) {
-                    // do whatever
-                }
-
-                fun onLongItemClick(view: View?, position: Int) {
-                    // do whatever
-                }
-            })
-        )*/
-
     }
-
-
 }

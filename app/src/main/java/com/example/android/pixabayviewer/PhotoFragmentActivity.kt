@@ -18,32 +18,19 @@ class PhotoFragmentActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //getSupportActionBar()?.setDisplayShowTitleEnabled(false);
 
         setContentView(R.layout.fragment_photo)
         binding = DataBindingUtil.setContentView(this, R.layout.fragment_photo)
 
-        //val user = User("Chris", 0, "url", "google")
-
-        /*
-            navController = Navigation.findNavController(
-                activity!!,
-                R.id.my_navigation_graph
-            )*/
-        /*navigateUpTo();
-
-        navController.navigateUp()*/
         val item: Hit? =OverviewViewModel.activeItem.value
         binding.photo = item
 
         val actionbar = supportActionBar
-        //set actionbar title
+
         actionbar!!.title =item?.tags.toString()
-        //actionbar!!.title = "New Activity"
-        //set back button
+
         actionbar.setDisplayHomeAsUpEnabled(true)
     }
-
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
